@@ -34,7 +34,7 @@ void setYPosto(Posto post, double y) {
     posto->y = y;
 }
 
-void desenhaPosto(FILE* svg, Posto post) {
+void desenharPosto(FILE* svg, Posto post) {
     PostoStruct* posto = (PostoStruct*) post;
     fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"5\" fill=\"black\" />\n", posto->x, posto->y);
 }

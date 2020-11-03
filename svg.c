@@ -6,6 +6,7 @@
 #include "texto.h"
 #include "quadra.h"
 #include "instrumentoUrbano.h"
+#include "posto.h"
 #include "lista.h"
 
 FILE* iniciarSvg(char filename[]){
@@ -42,5 +43,8 @@ void desenharSvg(FILE* svg, Lista list[7]){
         for(node = getFirst(list[i]); node != NULL; node = getNext(node)){
             desenharIU(svg, getInfo(node));
         }
+    }
+    for(node = getFirst(list[7]); node != NULL; node = getNext(node)) {
+        desenharPosto(svg, getInfo(node));
     }
 }

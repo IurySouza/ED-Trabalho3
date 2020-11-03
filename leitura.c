@@ -6,6 +6,7 @@
 #include "texto.h"
 #include "quadra.h"
 #include "instrumentoUrbano.h"
+#include "posto.h"
 #include "lista.h"
 #include "qry.h"
 #include "svg.h"
@@ -18,7 +19,7 @@ char *obterNomeArquivo(char path[]){
 	return strtok(&aux[1],".");
 }
 
-void geo(Lista list[7], char geoArq[], char saida[]){
+void geo(Lista list[10], char geoArq[], char saida[]){
     char tipo[4] ,corb[22] ,corp[22], cepid[20], texto[255];
     int i;
     double x, y, w, h, d;
@@ -94,6 +95,7 @@ void geo(Lista list[7], char geoArq[], char saida[]){
         }
         else if(strcmp(tipo, "ps") == 0) {
             fscanf(geo, "%lf %lf\n", &x, &y);
+            insert(list[7], criarPosto(x, y));
         }
         else if(strcmp(tipo, "dd") == 0) {
             fscanf(geo, "%lf %lf %lf %lf %lf\n", &x, &y, &w, &h, &d);
@@ -103,10 +105,9 @@ void geo(Lista list[7], char geoArq[], char saida[]){
     desenharSvg(svg,list);
     fecharSvg(svg);
     fclose(geo);
-    
 }
 
-void qry(Lista list[7], char path[], char nomeSaida[]){
+void qry(Lista list[10], char path[], char nomeSaida[]){
     char* pathTxt = malloc((5 + strlen(nomeSaida))*sizeof(char));
     char* pathSvg = malloc((5 + strlen(nomeSaida))*sizeof(char));
     sprintf(pathTxt,"%s.txt",nomeSaida);
@@ -240,8 +241,8 @@ void tratamento(char path[], char outPath[], char paramGeo[], char paramQry[]){
     }
     saidaGeo = (char*)malloc((strlen(saida) + 5)*sizeof(char));
     sprintf(saidaGeo,"%s.svg",saida);
-    Lista list[7];
-    for(i = 0; i < 7; i++){
+    Lista list[10];
+    for(i = 0; i < 10; i++){
         list[i] = createList();
     }
     geo(list, geoArq,saidaGeo);
@@ -256,7 +257,7 @@ void tratamento(char path[], char outPath[], char paramGeo[], char paramQry[]){
     free(geoArq);
     free(saida);
     free(saidaGeo);
-    for(i = 0; i < 7; i++){
+    for(i = 0; i < 10; i++){
         removeList(list[i]);
     }
 }

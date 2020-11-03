@@ -18,7 +18,7 @@ double getYPosto(Posto posto);
 void setYPosto(Posto posto, double y);
 //define a posição Y do posto
 
-void desenhaPosto(FILE* svg, Posto posto);
+void desenharPosto(FILE* svg, Posto posto);
 //desenha o posto no arquivo SVG
 
 #endif
