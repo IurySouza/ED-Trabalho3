@@ -9,6 +9,7 @@
 #include "lista.h"
 #include "svg.h"
 #include "verificacao.h"
+#include "casos.h"
 
 void pnt(FILE* txt, Lista list[7], int j, char corb[], char corp[]) {
     double x, y;
@@ -144,7 +145,7 @@ void intersecao(FILE* svg, FILE* txt, Lista list[7], int j, int k){
     }
 }
 
-void pontoInterno(FILE* svg, FILE* txt,Lista list[], int j, double xPonto,double yPonto){
+void pontoInterno(FILE* svg, FILE* txt, Lista list[], int j, double xPonto,double yPonto){
     No node;
     Info info;
     double x,y,w,h;
@@ -232,7 +233,7 @@ void dq(FILE* svg,FILE* txt, Lista list[7],char id[], double r, int flag){
             if(flag){
                 fprintf(svg,"\t<rect x=\"%lf\" y=\"%lf\" width=\"%lf\" height=\"%lf\" fill=\"beige\" stroke=\"olive\"  stroke-width=\"%s\" rx=\"20\"/>\n",getXQuad(info),getYQuad(info),getWQuad(info),getHQuad(info),getEspessuraQuad(info));
             }
-            fprintf(txt,"Quadra removida: %s", getCEP(info));
+            fprintf(txt," Quadra removida: %s\n", getCEP(info));
             aux = node;
             node = getNext(node);
             removeNode(list[3], aux);
@@ -241,6 +242,8 @@ void dq(FILE* svg,FILE* txt, Lista list[7],char id[], double r, int flag){
             node = getNext(node);
         }
     }
+    fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"6\" fill=\"none\" stroke=\"red\"/>\n",x,y);
+    fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"7\" fill=\"none\" stroke=\"blue\"/>\n",x,y);
 }
 
 void del(FILE* svg, FILE* txt, Lista list[7], char cepid[]) {
@@ -265,9 +268,9 @@ void del(FILE* svg, FILE* txt, Lista list[7], char cepid[]) {
     }
 
     if (i == 3) {
-        for(node = getFirst(list[i]); node != NULL; node = getNext(list[i])) {
+        for(node = getFirst(list[i]); node != NULL; node = getNext(node)) {
             fig = getInfo(node);
-            if (strcmp(cepid, getCEP(node)) == 0) {
+            if (strcmp(cepid, getCEP(fig)) == 0) {
                 w = getWQuad(fig);
                 h = getHQuad(fig);
                 x = getXQuad(fig);
@@ -275,39 +278,40 @@ void del(FILE* svg, FILE* txt, Lista list[7], char cepid[]) {
                 espessura = getEspessuraQuad(fig);
                 corb = getCorbQuad(fig);
                 corp = getCorpQuad(fig);
-                fprintf(txt, "CEP: %s x: %lf y: %lf w: %lf h: %lf espessura: %lf corb: %s corp: %s\n", cepid, x, y, w, h, espessura, corb, corp);
-                fprintf(svg, "\t<text x=\"%lf\" y=\"0\">CEP: %s</text>\n", x + 3,cepid);
-                x = x + w/2;
-                y = y + h/2;
+                fprintf(txt, "CEP: %s x: %lf y: %lf w: %lf h: %lf espessura: %s corb: %s corp: %s\n", cepid, x, y, w, h, espessura, corb, corp);
+                x += w/2;
+                y += h/2;
                 fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"stroke: black; stroke-width: 1\" />\n", x, y, x);
                 fprintf(svg, "\t<text x=\"%lf\" y=\"0\">CEP: %s</text>\n", x + 3,cepid);
-                removeNode(list[i], fig);
+                removeNode(list[i], node);
                 return;
-            } else {
-                for(node = getFirst(list[i]); node != NULL; node = getNext(list[i])) {
-                    fig = getInfo(node);
-                    if (strcmp(cepid, getCEP(node))) {
-                        x = getXIU(fig);
-                        y = getYIU(fig);
-                        espessura = getEspessuraIU(fig);
-                        corb = getCorbIU(fig);
-                        corp = getCorpIU(fig);
-                        fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"/>\n", x, y, x);
-                        fprintf(svg, "\t<text x=\"%lf\" y=\"0\">ID: %s</text>\n", x + 3,cepid);
-                        fprintf(txt, "ID: %s x: %lf y: %lf espessura: %lf corb: %s corp: %s", cepid, x, y, espessura, corb, corp);
-                        removeNode(list[i], fig);
-                        return;
-                    }
-                }
+            }
+        }
+    } 
+    else {
+        for(node = getFirst(list[i]); node != NULL; node = getNext(node)) {
+            fig = getInfo(node);
+            if (strcmp(cepid, getCEP(fig)) == 0) {
+                x = getXIU(fig);
+                y = getYIU(fig);
+                espessura = getEspessuraIU(fig);
+                corb = getCorbIU(fig);
+                corp = getCorpIU(fig);
+                fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"stroke: black; stroke-width: 1\"/>\n", x, y, x);
+                fprintf(svg, "\t<text x=\"%lf\" y=\"0\">ID: %s</text>\n", x + 3,cepid);
+                fprintf(txt, "ID: %s x: %lf y: %lf espessura: %s corb: %s corp: %s\n", cepid, x, y, espessura, corb, corp);
+                removeNode(list[i], node);
+                return;
             }
         }
     }
+    printf("Nao encontrado\n");
 }
 
 void cbq(FILE* txt, Lista list[7], double x, double y, double r, char cstrk[]) {
     No node;
     Info fig;
-    for(node = getFirst(list[3]); node != NULL; node = getNext(list[3])) {
+    for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
         fig = getInfo(node);
         if (quadraInternoCirc(fig, x, y, r)) {
             setCorbQuad(fig, cstrk);
@@ -340,7 +344,7 @@ void crd(FILE* txt, Lista list[7], char cepid[]) {
         break;  
     }
     if (i == 3) {
-        for (node = getFirst(list[i]); node != NULL; node = getNext(list[i])) {
+        for (node = getFirst(list[i]); node != NULL; node = getNext(node)) {
             fig = getInfo(node);
             if (strcmp(cepid, getCEP(fig)) == 0) {
                 x = getXQuad(fig);
@@ -350,7 +354,7 @@ void crd(FILE* txt, Lista list[7], char cepid[]) {
             }
         }
     } else {
-        for (node = getFirst(list[i]); node != NULL; node = getNext(list[i])) {
+        for (node = getFirst(list[i]); node != NULL; node = getNext(node)) {
             fig = getInfo(node);
             if (strcmp(cepid, getIdIU(fig)) == 0) {
                 x = getXIU(fig);
@@ -365,23 +369,60 @@ void crd(FILE* txt, Lista list[7], char cepid[]) {
 void car(FILE* svg, FILE* txt, Lista list[7], double px, double py, double pw, double ph) {
     Info fig;
     No node;
+    char textoArea[30];
     double area = 0, x, y, w, h;
-    char *cep;
     fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"%lf\" height=\"%lf\"/>\n", px, py, pw, ph);
-    fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"/>\n", px, py, px);
-    for(node = getFirst(list[3]); node != NULL; node = getNext(list[3])) {
+    fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\"/>\n", px, py, px);
+    for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
         fig = getInfo(node);
         if (quadraInternoRet(fig, px, py, pw, ph)) {
             x = getXQuad(fig);
             y = getYQuad(fig);
             w = getWQuad(fig);
             h = getHQuad(fig);
-            cep = getCEP(fig);
             area += (w * h);
-            fprintf(svg, "\t<text x=\"%lf\" y=\"%lf\">Area: %lf m</text>\n²", x + w/2, y + h/2, w * h);
-            fprintf(txt, "CEP: %s\n", cep);
+            sprintf(textoArea,"Area: %lf m²",w * h);
+            insert(list[2],criarTexto(-1,x + w/2, y + h/2,"black","black",textoArea));
+            fprintf(txt, "CEP: %s %lf\n", getCEP(fig), w * h);
         }
     }
     fprintf(svg, "\t<text x=\"%lf\" y=\"0\">Area total: %lf m²</text>\n", px + 3, area);
     fprintf(txt, "Area total: %lf\n", area);
+}
+
+void cv(Lista list[10], int n, char cep[], char face, int num){
+    No node;
+    Info fig;
+    double x, y, h, w;
+    for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
+        fig = getInfo(node);
+        if (strcmp(cep, getCEP(node)) == 0) {
+            x = getXQuad(fig);
+            y = getYQuad(fig);
+            h = getHQuad(fig);
+            w = getWQuad(fig);
+            break;
+        }
+    }
+    if(node == NULL){
+        printf("Quadra nao encontrada\n");
+        return;
+    }
+    switch (face){
+    case 'n':
+        x += num;
+        break;
+    case 's':
+        x += num;
+        y += h;
+        break;
+    case 'l':
+        y += num;
+        break;
+    case 'o':
+        x += w;
+        y += num;
+        break;
+    }
+    insert(list[9],createCasos(x,y,cep,face,num,n));
 }

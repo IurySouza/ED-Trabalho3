@@ -61,3 +61,20 @@ void swap(CasosCovid *p1, CasosCovid *p2){
     *a = *b;  
     *b = temp;  
 }
+
+void desenharQuadra(FILE* svg, CasosCovid caso){
+    EnderecoStruct* c = (EnderecoStruct*) caso;
+    double h = 10, w = 5;
+    double x = getXCaso(c);
+    double y = getYCaso(c);
+    switch (getFaceCaso(c)){
+    case 's':
+        y -= h;
+        break;
+    case 'o':
+        x -= w;
+        break;
+    }
+    fprintf(svg,"\t<rect x=\"%lf\" y=\"%lf\" width=\"%lf\" height=\"%lf\" fill=\"%s\" />\n",x,y,w,h,"orange");
+    fprintf(svg,"\t<text x=\"%lf\" y=\"%lf\" fill=\"white\" >%d</text>\n",x + w/2,y + h/2,getNCasos(c));
+}
