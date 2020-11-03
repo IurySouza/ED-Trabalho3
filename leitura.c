@@ -21,7 +21,7 @@ char *obterNomeArquivo(char path[]){
 void geo(Lista list[7], char geoArq[], char saida[]){
     char tipo[4] ,corb[22] ,corp[22], cepid[20], texto[255];
     int i;
-    double x,y,w,h;
+    double x, y, w, h, d;
     char cw[10] = "1";
     char rw[10] = "1";
     char eq[10] = "1";
@@ -91,6 +91,12 @@ void geo(Lista list[7], char geoArq[], char saida[]){
         }
         else if(strcmp(tipo,"sw") == 0){
             fscanf(geo,"%s %s\n", cw, rw);
+        }
+        else if(strcmp(tipo, "ps") == 0) {
+            fscanf(geo, "%lf %lf\n", &x, &y);
+        }
+        else if(strcmp(tipo, "dd") == 0) {
+            fscanf(geo, "%lf %lf %lf %lf %lf\n", &x, &y, &w, &h, &d);
         }
     }
     FILE* svg = iniciarSvg(saida);
