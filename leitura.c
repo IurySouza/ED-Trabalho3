@@ -7,6 +7,7 @@
 #include "quadra.h"
 #include "instrumentoUrbano.h"
 #include "posto.h"
+#include "regiao.h"
 #include "lista.h"
 #include "qry.h"
 #include "svg.h"
@@ -99,6 +100,7 @@ void geo(Lista list[10], char geoArq[], char saida[]){
         }
         else if(strcmp(tipo, "dd") == 0) {
             fscanf(geo, "%lf %lf %lf %lf %lf\n", &x, &y, &w, &h, &d);
+            insert(list[8], criarRegiao(x, y, w, h, d));
         }
     }
     FILE* svg = iniciarSvg(saida);
@@ -121,7 +123,7 @@ void qry(Lista list[10], char path[], char nomeSaida[]){
     }
     int j,k,i;
     double x,y,h,w;
-    char tipo[5], cepid[20], corb[22], corp[22];
+    char face, tipo[5], cepid[20], corb[22], corp[22];
     while(fscanf(consulta,"%s",tipo) != EOF){
         if(strcmp(tipo,"o?") == 0){
             fscanf(consulta,"%d %d\n",&j,&k);
@@ -189,6 +191,11 @@ void qry(Lista list[10], char path[], char nomeSaida[]){
             fscanf(consulta,"%lf %lf %lf %lf\n", &x, &y ,&w, &h);
             fprintf(saida,"%s %lf %lf %lf %lf\n", tipo, x, y, w, h);
             car(svg,saida,list,x,y,w,h);
+        }
+        else if(strcmp(tipo,"cv") == 0){
+            fscanf(consulta,"%d %s %c %d\n", &i, cepid ,&face, &j);
+            fprintf(saida,"%d %s %c %d\n", i, cepid ,face, j);
+            cv(list,i,cepid,face,j);
         }
 
     }
