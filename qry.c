@@ -11,7 +11,7 @@
 #include "verificacao.h"
 #include "casos.h"
 
-void pnt(FILE* txt, Lista list[7], int j, char corb[], char corp[]) {
+void pnt(FILE* txt, Lista list[10], int j, char corb[], char corp[]) {
     double x, y;
     No node;
     Info fig;
@@ -51,7 +51,7 @@ void pnt(FILE* txt, Lista list[7], int j, char corb[], char corp[]) {
     }
 }
 
-void delf(FILE* txt, Lista list[7], int j) {
+void delf(FILE* txt, Lista list[10], int j) {
     No node;
     Info fig;
     double x, y, r, w, h;
@@ -101,7 +101,7 @@ void delf(FILE* txt, Lista list[7], int j) {
     }
 }
 
-void intersecao(FILE* svg, FILE* txt, Lista list[7], int j, int k){
+void intersecao(FILE* svg, FILE* txt, Lista list[10], int j, int k){
     No node;
     Info fig1, fig2, aux;
     char tipo1, tipo2;
@@ -145,7 +145,7 @@ void intersecao(FILE* svg, FILE* txt, Lista list[7], int j, int k){
     }
 }
 
-void pontoInterno(FILE* svg, FILE* txt, Lista list[], int j, double xPonto,double yPonto){
+void pontoInterno(FILE* svg, FILE* txt, Lista list[10], int j, double xPonto,double yPonto){
     No node;
     Info info;
     double x,y,w,h;
@@ -192,7 +192,7 @@ void pontoInterno(FILE* svg, FILE* txt, Lista list[], int j, double xPonto,doubl
     }
 }
 
-void dq(FILE* svg,FILE* txt, Lista list[7],char id[], double r, int flag){
+void dq(FILE* svg,FILE* txt, Lista list[10],char id[], double r, int flag){
     Info info;
     No aux, node;
     int i, encontrado = 0;
@@ -246,7 +246,7 @@ void dq(FILE* svg,FILE* txt, Lista list[7],char id[], double r, int flag){
     fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"7\" fill=\"none\" stroke=\"blue\"/>\n",x,y);
 }
 
-void del(FILE* svg, FILE* txt, Lista list[7], char cepid[]) {
+void del(FILE* svg, FILE* txt, Lista list[10], char cepid[]) {
     Info fig;
     No node;
     int i = 3;
@@ -308,7 +308,7 @@ void del(FILE* svg, FILE* txt, Lista list[7], char cepid[]) {
     printf("Nao encontrado\n");
 }
 
-void cbq(FILE* txt, Lista list[7], double x, double y, double r, char cstrk[]) {
+void cbq(FILE* txt, Lista list[10], double x, double y, double r, char cstrk[]) {
     No node;
     Info fig;
     for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
@@ -320,7 +320,7 @@ void cbq(FILE* txt, Lista list[7], double x, double y, double r, char cstrk[]) {
     }
 }
 
-void crd(FILE* txt, Lista list[7], char cepid[]) {
+void crd(FILE* txt, Lista list[10], char cepid[]) {
     No node;
     Info fig;
     int i = 3;
@@ -366,7 +366,7 @@ void crd(FILE* txt, Lista list[7], char cepid[]) {
     }
 }
 
-void car(FILE* svg, FILE* txt, Lista list[7], double px, double py, double pw, double ph) {
+void car(FILE* svg, FILE* txt, Lista list[10], double px, double py, double pw, double ph) {
     Info fig;
     No node;
     char textoArea[30];

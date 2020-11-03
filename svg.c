@@ -7,6 +7,7 @@
 #include "quadra.h"
 #include "instrumentoUrbano.h"
 #include "lista.h"
+#include "casos.h"
 
 FILE* iniciarSvg(char filename[]){
     
@@ -24,7 +25,7 @@ void fecharSvg(FILE* svg){
     fclose(svg);
 }
 
-void desenharSvg(FILE* svg, Lista list[7]){
+void desenharSvg(FILE* svg, Lista list[10]){
     No node;
     for(node = getFirst(list[0]); node != NULL; node = getNext(node)){
         desenharCirculo(svg, getInfo(node));
@@ -42,5 +43,8 @@ void desenharSvg(FILE* svg, Lista list[7]){
         for(node = getFirst(list[i]); node != NULL; node = getNext(node)){
             desenharIU(svg, getInfo(node));
         }
+    }
+    for(node = getFirst(list[9]); node != NULL; node = getNext(node)){
+        desenharCasos(svg,getInfo(node));
     }
 }

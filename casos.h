@@ -20,4 +20,6 @@ int getNCasos(CasosCovid caso);
 
 void swap(CasosCovid *a, CasosCovid *b);
 
+void desenharCasos(FILE* svg, CasosCovid caso);
+
 #endif

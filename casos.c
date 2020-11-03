@@ -62,7 +62,7 @@ void swap(CasosCovid *p1, CasosCovid *p2){
     *b = temp;  
 }
 
-void desenharQuadra(FILE* svg, CasosCovid caso){
+void desenharCasos(FILE* svg, CasosCovid caso){
     EnderecoStruct* c = (EnderecoStruct*) caso;
     double h = 10, w = 5;
     double x = getXCaso(c);
