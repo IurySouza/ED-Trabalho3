@@ -11,9 +11,10 @@ Posto criarPosto(double x, double y) {
     PostoStruct* posto = (PostoStruct*) malloc(sizeof(PostoStruct));
     posto->x = x;
     posto->y = y;
+    return posto;
 }
 
-Posto getXPosto(Posto post) {
+double getXPosto(Posto post) {
     PostoStruct* posto = (PostoStruct*) post;
     return posto->x;
 }
@@ -23,7 +24,7 @@ void setXPosto(Posto post, double x) {
     posto->x = x;
 }
 
-Posto getYPosto(Posto post) {
+double getYPosto(Posto post) {
     PostoStruct* posto = (PostoStruct*) post;
     return posto->y;
 }
@@ -35,5 +36,5 @@ void setYPosto(Posto post, double y) {
 
 void desenhaPosto(FILE* svg, Posto post) {
     PostoStruct* posto = (PostoStruct*) post;
-    fprintf();
+    fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"5\" fill=\"black\" />\n", posto->x, posto->y);
 }
