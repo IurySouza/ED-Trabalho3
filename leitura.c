@@ -194,10 +194,19 @@ void qry(Lista list[10], char path[], char nomeSaida[]){
         }
         else if(strcmp(tipo,"cv") == 0){
             fscanf(consulta,"%d %s %c %d\n", &i, cepid ,&face, &j);
-            fprintf(saida,"%d %s %c %d\n", i, cepid ,face, j);
+            fprintf(saida,"%s %d %s %c %d\n",tipo, i, cepid ,face, j);
             cv(list,i,cepid,face,j);
         }
-
+        else if(strcmp(tipo,"soc") == 0){
+            fscanf(consulta,"%d %s %c %d\n", &i, cepid ,&face, &j);
+            fprintf(saida,"%s %d %s %c %d\n",tipo, i, cepid ,face, j);
+            soc(svg,saida,list,i,cepid,face,j);
+        }
+        else if(strcmp(tipo,"ci") == 0){
+            fscanf(consulta,"%lf %lf %lf\n", &x, &y, &h);
+            fprintf(saida,"%s %lf %lf %lf\n",tipo, x, y, h);
+            ci(svg,saida,list,x,y,h);
+        }
     }
     desenharSvg(svg,list);
     fecharSvg(svg);

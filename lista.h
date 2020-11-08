@@ -12,6 +12,9 @@ Lista createList();
 void insert(Lista l, Info info);
 //Insere um novo no na lista
 
+int getTamanho(Lista lista);
+//Retorna o tamanho da lista
+
 No getFirst(Lista lista);
 //Retorna o primeiro no da lista
 

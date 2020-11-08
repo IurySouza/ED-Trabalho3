@@ -11,12 +11,14 @@ typedef struct node{
 typedef struct lista{
     NodeStruct *primeiro;
     NodeStruct *ultimo;
+    int tamanho;
 }ListaStruct;
 
 Lista createList() {
     ListaStruct* lista = (ListaStruct*) malloc(sizeof(ListaStruct));
     lista->primeiro = NULL;
     lista->ultimo = NULL;
+    lista->tamanho = 0;
     return lista;
 }
 
@@ -33,6 +35,13 @@ void insert(Lista l, Info info) {
     }
     node->proximo = NULL;
     lista->ultimo = node;
+    lista->tamanho++;
+}
+
+
+int getTamanho(Lista lista){
+    ListaStruct* l = (ListaStruct*) lista;
+    return l->tamanho;
 }
 
 No getFirst(Lista lista){
@@ -77,6 +86,7 @@ void insertAfter(Lista l, No elemento, Info info){
         novo->anterior = node;
         lista->ultimo = novo;
     }
+    lista->tamanho++;
 }
 
 void insertBefore(Lista l, No elemento, Info info){
@@ -96,6 +106,7 @@ void insertBefore(Lista l, No elemento, Info info){
         novo->proximo = node;
         lista->primeiro = novo;
     }
+    lista->tamanho++;
 }
 
 void removeNode(Lista l, No elemento){
@@ -113,6 +124,7 @@ void removeNode(Lista l, No elemento){
     }
     free(getInfo(node));
     free(node);
+    lista->tamanho--;
 }
 
 void removeList(Lista l){

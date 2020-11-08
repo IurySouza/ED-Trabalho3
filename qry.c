@@ -10,6 +10,7 @@
 #include "svg.h"
 #include "verificacao.h"
 #include "casos.h"
+#include "sorts.h"
 
 void pnt(FILE* txt, Lista list[10], int j, char corb[], char corp[]) {
     double x, y;
@@ -396,7 +397,7 @@ void cv(Lista list[10], int n, char cep[], char face, int num){
     double x, y, h, w;
     for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
         fig = getInfo(node);
-        if (strcmp(cep, getCEP(node)) == 0) {
+        if (strcmp(cep, getCEP(fig)) == 0) {
             x = getXQuad(fig);
             y = getYQuad(fig);
             h = getHQuad(fig);
@@ -425,4 +426,135 @@ void cv(Lista list[10], int n, char cep[], char face, int num){
         break;
     }
     insert(list[9],createCasos(x,y,cep,face,num,n));
+}
+
+void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int num) {
+    No node;
+    Info fig;
+    double x, y, w, h;
+    for (node = getFirst(list[3]); node != NULL; node = getNext(node)) {
+        fig = getInfo(node);
+        if (strcmp(getCEP(node), cep) == 0) {
+            x = getXQuad(fig);
+            y = getYQuad(fig);
+            w = getWQuad(fig);
+            h = getHQuad(fig);
+            break;
+        }
+    }
+    if(node == NULL) {
+        printf("Quadra não encontrada.\n");
+        return;
+    }
+    switch(face) {
+    case 'n':
+        x += num;
+        break;
+    case 's':
+        x += num;
+        y += h;
+        break;
+    case 'l':
+        y += num;
+        break;
+    case 'o':
+        x += w;
+        y += num;
+        break;
+    }
+    shellSort(list[7], x, y);
+    fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"4\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n", x, y);
+    int i = 0;
+    node = getFirst(list[3]);
+    while (i < k) {
+        fig = getInfo(node);
+        fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n", getXPosto(fig), getYPosto(fig), x, y);
+        fprintf(txt, "x: %lf y: %lf\n", getXPosto(fig), getYPosto(fig));
+        node = getNext(node);
+        i++;
+    }
+}
+
+void ci(FILE* svg, FILE* txt, Lista list[10], double x, double y, double r){
+    No node;
+    Info fig;
+    int flag = 1, n = 0;
+    double d, inc, area;
+    char cor[22];
+    Posto posto = NULL;
+    for(node = getFirst(list[8]); node != NULL; node = getNext(node)){
+        fig = getInfo(node);
+        if(circIntRegiao(fig,x,y,r)){
+            d = getDRegiao(fig);
+            flag = 0;
+            break;
+        }
+    }
+    insert(list[0],criarCirculo(0,x,y,r,"5px","none","green"));
+
+    if(flag){
+        printf("O circulo não está dentro de uma região onde a densidade demografica e conhecida");
+        return;
+    }
+    Lista l = createList();
+    for(node = getFirst(list[9]); node != NULL; node = getNext(node)){
+        fig = getInfo(node);
+        if(pontoInternoCirc(getXCaso(fig),getYCaso(fig),x,y,r)){
+            insert(l,fig);
+            fprintf(txt,"X : %lf y : %lf\n", getXCaso(fig),getYCaso(fig));
+            n += getNCasos(fig);
+        }
+    }
+    if(getFirst(l) == NULL){
+        printf("Não foi encontrado casos na região\n");
+        return;
+    }
+    Lista casos = convexHull(l);
+    if(casos == NULL){
+        casos = l;
+    }
+    area = obterArea(casos);
+    fprintf(txt,"Numero de casos : %d\nArea : %lf\n",n,area);
+    if(area != 0){
+        inc = n/(10 * d * area);
+        if(inc < 0.1){
+            strcpy(cor, "00FFFF");
+            fprintf(txt,"Categoria : A - Livre de Covid\n");
+        }
+        else if(inc < 5){
+            strcpy(cor, "008080");
+            fprintf(txt,"Categoria : B - Baixa incidencia\n");
+        }
+        else if(inc < 10){
+            strcpy(cor, "FFFF00");
+            fprintf(txt,"Categoria : C - Media incidencia\n");
+        }
+        else if(inc < 20){
+            strcpy(cor, "FF0000");
+            fprintf(txt,"Categoria : D - Alta incidencia\n");
+        }
+        else{
+            strcpy(cor, "800080");
+            fprintf(txt,"Categoria : E - Catastrofico\n");
+            for(node = getFirst(list[7]); node != NULL; node = getNext(node)){
+                fig = getInfo(node);
+                if(pontoInternoCirc(getXPosto(fig), getYPosto(fig), x, y, r)){
+                    posto = fig;
+                }
+            }
+            if(posto == NULL){
+                posto = centroide(casos,area);
+                fprintf(txt,"Necessário novo posto em (%lf,%lf)\n",getXPosto(posto),getYPosto(posto));
+            }
+        }
+    }
+    else{
+        fprintf(txt,"Não é possivel obter a categoria da região, apenas um caso dentro do circulo\n");
+    }
+    fprintf(svg,"\t<polygon fill=\"%s\" fill-opacity=\"0.2\" stroke=\"red\" stroke-width=\"5px\" points=\"",cor);
+    for(node = getFirst(casos); node != NULL; node = getNext(node)){
+        fig = getInfo(node);
+        fprintf(svg," %lf,%lf",getXCaso(fig),getYCaso(fig));
+    }
+    fprintf(svg," \"/>\n");
 }

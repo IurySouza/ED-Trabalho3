@@ -64,7 +64,7 @@ void swap(CasosCovid *p1, CasosCovid *p2){
 
 void desenharCasos(FILE* svg, CasosCovid caso){
     EnderecoStruct* c = (EnderecoStruct*) caso;
-    double h = 10, w = 5;
+    double h = 40, w = 25;
     double x = getXCaso(c);
     double y = getYCaso(c);
     switch (getFaceCaso(c)){

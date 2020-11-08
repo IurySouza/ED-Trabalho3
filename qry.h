@@ -36,5 +36,12 @@ void car(FILE* svg, FILE* txt, Lista list[10], double px, double py, double pw, 
 //Calcula a area das figuras dentro do retangulo e adiciona as informações nos arquivos de saida
 
 void cv(Lista list[10], int n, char cep[], char face, int num);
+//Armazena a informação de casos de covid em um determinado endereço
+
+void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int num);
+
+
+void ci(FILE* svg, FILE* txt, Lista list[10], double x, double y, double r);
+//Determina a região de incidencia e a categoria de uma região, adicionando informacoes nos arquivos svg e txt
 
 #endif

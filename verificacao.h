@@ -4,6 +4,8 @@
 #include "retangulo.h"
 #include "circulo.h"
 #include "quadra.h"
+#include "regiao.h"
+#include "posto.h"
 
 double maior(double n1, double n2);
 //Retorna o maior double entre os parametros
@@ -34,5 +36,14 @@ int pontoInternoCirc(double xPonto, double yPonto, double xCirc, double yCirc, d
 
 int pontoInternoRet(double xPonto, double yPonto, double xRet, double yRet, double w, double h);
 //Verifica se o ponto esta inteiramente dentro do retangulo de ponto (x,y), largura w e altura h;
+
+int circIntRegiao(Regiao dd, double x, double y, double r);
+//Verifica se o circulo é interno a uma região;
+
+double obterArea(Lista l);
+//Calcula a area de um poligono descrito por um lista da estrutura de Casos de covid, onde os vertices estão ordenados no sentido anti-horario;
+
+Posto centroide(Lista l, double area);
+//Calcula a centroide de um poligono descrito por um lista da estrutura de Casos de covid, onde os vertices estão ordenados no sentido anti-horario;
 
 #endif

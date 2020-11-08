@@ -3,6 +3,8 @@
 #include <math.h>
 #include "lista.h"
 #include "casos.h"
+#include "verificacao.h"
+#include "posto.h"
 
 int orientacao(CasosCovid a, CasosCovid b, CasosCovid c){
     double area = (getXCaso(b) - getXCaso(a)) * (getYCaso(c) - getYCaso(a)) - (getYCaso(b) - getYCaso(a)) * (getXCaso(c) - getXCaso(a));
@@ -46,7 +48,8 @@ void quickSortList(Lista l, No primeiro, No ultimo){
 
 Lista convexHull(Lista list){
     No primeiro = getFirst(list), i;
-    CasosCovid p1 = getInfo(primeiro), p2;
+    CasosCovid p2;
+    CasosCovid p1 = getInfo(primeiro);
     for(i = getNext(primeiro); i != NULL; i = getNext(i)){
         p2 = getInfo(i);
         if(getYCaso(p2) < getYCaso(p1) || (getYCaso(p2) == getYCaso(p1) && getXCaso(p2) < getXCaso(p1))){
@@ -73,11 +76,50 @@ Lista convexHull(Lista list){
     for(i = primeiro, j = 0; j < 3; j++, i = getNext(i)){
         insert(envConv,getInfo(i));
     }
-    for(;i != NULL; i = getNext(i)){
+    while(i != NULL){
         while (orientacao(getInfo(getPrevious(getLast(envConv))), getInfo(getLast(envConv)), getInfo(i)) != 1){
             removeNode(envConv,getLast(envConv));
         }
         insert(envConv,getInfo(i));
+        i = getNext(i);
     }
     return envConv;
+}
+
+Info getIndexInfo(Lista list, int i) {
+    Info info;
+    No node;
+    int j = 0;
+    node = getFirst(list);
+    while (j < i) {
+        node = getNext(node);
+        j++;
+    }
+    info = getInfo(node);
+    return info;
+}
+
+void shellSort(Lista list, double x, double y) {
+    Info info1, info2, aux;
+    int i, j, h, tamanho = getTamanho(list);
+
+    for (h = 1; h < tamanho; h = 3 * h + 1);
+
+    while (h > 0) {
+        h = (h - 1)/3;
+        for (i = h; i < tamanho; i++) {
+            aux = getIndexInfo(list, i);
+            j = i;
+            while (getPostoDist(getIndexInfo(list, j - h), x, y) > getPostoDist(aux, x, y)) {
+                info1 = getIndexInfo(list, j);
+                info2 = getIndexInfo(list, j - h);
+                postoSwap(info1, info2);
+                j -= h;
+                if (j < h) {
+                    break;
+                }
+            }
+            postoSwap(getIndexInfo(list, j), aux);
+        }
+    }
 }

@@ -9,6 +9,9 @@
 #include "instrumentoUrbano.h"
 #include "lista.h"
 #include "svg.h"
+#include "regiao.h"
+#include "casos.h"
+#include "posto.h"
 
 double maior(double n1, double n2){
     if(n1 > n2){
@@ -108,4 +111,43 @@ int pontoInternoRet(double xPonto, double yPonto, double xRet, double yRet, doub
     double dx = xPonto - xRet;
     double dy = yPonto - yRet;
     return dx >= 0 && dx <= w && dy >= 0 && dy <= h;
+}
+
+int circIntRegiao(Regiao dd, double x, double y, double r){
+    if((x - r > getXRegiao(dd) && x - r < getXRegiao(dd) + getWRegiao(dd)) ||(x + r > getXRegiao(dd) && x + r < getXRegiao(dd) + getWRegiao(dd))){
+        if((y - r > getYRegiao(dd) && y - r < getYRegiao(dd) + getHRegiao(dd)) ||(y + r > getYRegiao(dd) && y + r < getYRegiao(dd) + getHRegiao(dd))){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+double obterArea(Lista l){
+    double a = 0;
+    Info i, j;
+    No node;
+    for(node = getFirst(l); getNext(node) != NULL; node = getNext(node)){
+        i = getInfo(node);
+        j = getInfo(getNext(node));
+        a += getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
+    }
+    i = getInfo(node);
+    j = getInfo(getFirst(l));
+    a += getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
+    return a/2;
+}
+
+Posto centroide(Lista l, double area){
+    double x = 0, y = 0;
+    Info i, j;
+    No node;
+    insert(l,getFirst(l));
+    for(node = getFirst(l); getNext(node) != NULL; node = getNext(node)){
+        i = getInfo(node);
+        j = getInfo(getNext(node));
+        x += (getXCaso(i) + getXCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
+        y += (getYCaso(i) + getYCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
+    }
+    removeNode(l,getLast(l));
+    return criarPosto(x/(6 * area), y/(6 * area));
 }

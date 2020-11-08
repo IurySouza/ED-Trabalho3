@@ -28,6 +28,14 @@ void fecharSvg(FILE* svg){
 
 void desenharSvg(FILE* svg, Lista list[10]){
     No node;
+    for(node = getFirst(list[3]); node != NULL; node = getNext(node)){
+        desenharQuadra(svg, getInfo(node));
+    }
+    for(int i = 4; i < 7; i++){
+        for(node = getFirst(list[i]); node != NULL; node = getNext(node)){
+            desenharIU(svg, getInfo(node));
+        }
+    }
     for(node = getFirst(list[0]); node != NULL; node = getNext(node)){
         desenharCirculo(svg, getInfo(node));
     }
@@ -36,14 +44,6 @@ void desenharSvg(FILE* svg, Lista list[10]){
     }
     for(node = getFirst(list[2]); node != NULL; node = getNext(node)){
         desenharTexto(svg, getInfo(node));
-    }
-    for(node = getFirst(list[3]); node != NULL; node = getNext(node)){
-        desenharQuadra(svg, getInfo(node));
-    }
-    for(int i = 4; i < 7; i++){
-        for(node = getFirst(list[i]); node != NULL; node = getNext(node)){
-            desenharIU(svg, getInfo(node));
-        }
     }
     for(node = getFirst(list[7]); node != NULL; node = getNext(node)) {
         desenharPosto(svg, getInfo(node));
