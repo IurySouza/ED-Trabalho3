@@ -503,6 +503,7 @@ void ci(FILE* svg, FILE* txt, Lista list[11], double x, double y, double r){
         return;
     }
     Lista l = createList();
+    Lista casos = NULL;
     for(node = getFirst(list[9]); node != NULL; node = getNext(node)){
         fig = getInfo(node);
         if(pontoInternoCirc(getXCaso(fig),getYCaso(fig),x,y,r)){
@@ -512,10 +513,16 @@ void ci(FILE* svg, FILE* txt, Lista list[11], double x, double y, double r){
         }
     }
     if(getFirst(l) == NULL){
+        free(l);
         printf("Não foi encontrado casos na região\n");
         return;
     }
-    Lista casos = convexHull(l);
+    else if(getTamanho(l) > 2){
+        casos = convexHull(l);
+    }
+    else{
+        printf("Não é possivel formar o poligono, apenas %d endereco(s)\n",getTamanho(l));
+    }
     if(casos == NULL){
         casos = l;
     }

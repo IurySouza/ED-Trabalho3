@@ -59,7 +59,7 @@ Lista convexHull(Lista list){
     swap(getInfo(primeiro),p1);
     quickSortList(list,getNext(primeiro),getLast(list));
     int j = 1;
-    for(i = getNext(primeiro); i != NULL; i = getNext(i)){
+    for(i = getNext(getNext(primeiro)); i != NULL; i = getNext(i)){
         p1 = getInfo(i);
         p2 = getInfo(getPrevious(i));
         if(orientacao(getInfo(primeiro),p1,p2) == 0){
