@@ -12,7 +12,7 @@
 #include "casos.h"
 #include "sorts.h"
 
-void pnt(FILE* txt, Lista list[10], int j, char corb[], char corp[]) {
+void pnt(FILE* txt, Lista list[11], int j, char corb[], char corp[]) {
     double x, y;
     No node;
     Info fig;
@@ -52,7 +52,7 @@ void pnt(FILE* txt, Lista list[10], int j, char corb[], char corp[]) {
     }
 }
 
-void delf(FILE* txt, Lista list[10], int j) {
+void delf(FILE* txt, Lista list[11], int j) {
     No node;
     Info fig;
     double x, y, r, w, h;
@@ -68,7 +68,7 @@ void delf(FILE* txt, Lista list[10], int j) {
             corb = getCorbCirc(fig);
             corp = getCorpCirc(fig);
             fprintf(txt, "id: %d x: %lf y: %lf r: %lf espessura: %s corb: %s corp: %s\n", j, x, y, r, espessura, corb, corp);
-            removeNode(list[0], node);
+            removeNode(list[0], node, 1);
             return;
         }
     }
@@ -83,7 +83,7 @@ void delf(FILE* txt, Lista list[10], int j) {
             corb = getCorbRet(fig);
             corp = getCorpRet(fig);
             fprintf(txt, "id: %d x: %lf y: %lf w: %lf h: %lf espessura: %s corb: %s corp: %s\n", j, x, y, w, h, espessura, corb, corp);
-            removeNode(list[1], node);
+            removeNode(list[1], node, 1);
             return;
         }
     }
@@ -96,13 +96,13 @@ void delf(FILE* txt, Lista list[10], int j) {
             corp = getCorpTxt(fig);
             text = getTexto(fig);
             fprintf(txt, "id: %d x: %lf y: %lf corb: %s corp: %s texto: %s\n", j, x, y, corb, corp, text);
-            removeNode(list[2], node);
+            removeNode(list[2], node, 1);
             return;
         }
     }
 }
 
-void intersecao(FILE* svg, FILE* txt, Lista list[10], int j, int k){
+void intersecao(FILE* svg, FILE* txt, Lista list[11], int j, int k){
     No node;
     Info fig1, fig2, aux;
     char tipo1, tipo2;
@@ -146,7 +146,7 @@ void intersecao(FILE* svg, FILE* txt, Lista list[10], int j, int k){
     }
 }
 
-void pontoInterno(FILE* svg, FILE* txt, Lista list[10], int j, double xPonto,double yPonto){
+void pontoInterno(FILE* svg, FILE* txt, Lista list[11], int j, double xPonto,double yPonto){
     No node;
     Info info;
     double x,y,w,h;
@@ -193,7 +193,7 @@ void pontoInterno(FILE* svg, FILE* txt, Lista list[10], int j, double xPonto,dou
     }
 }
 
-void dq(FILE* svg,FILE* txt, Lista list[10],char id[], double r, int flag){
+void dq(FILE* svg,FILE* txt, Lista list[11],char id[], double r, int flag){
     Info info;
     No aux, node;
     int i, encontrado = 0;
@@ -237,7 +237,7 @@ void dq(FILE* svg,FILE* txt, Lista list[10],char id[], double r, int flag){
             fprintf(txt," Quadra removida: %s\n", getCEP(info));
             aux = node;
             node = getNext(node);
-            removeNode(list[3], aux);
+            removeNode(list[3], aux, 1);
         }
         else{
             node = getNext(node);
@@ -247,7 +247,7 @@ void dq(FILE* svg,FILE* txt, Lista list[10],char id[], double r, int flag){
     fprintf(svg,"\t<circle cx=\"%lf\" cy=\"%lf\" r=\"7\" fill=\"none\" stroke=\"blue\"/>\n",x,y);
 }
 
-void del(FILE* svg, FILE* txt, Lista list[10], char cepid[]) {
+void del(FILE* svg, FILE* txt, Lista list[11], char cepid[]) {
     Info fig;
     No node;
     int i = 3;
@@ -284,7 +284,7 @@ void del(FILE* svg, FILE* txt, Lista list[10], char cepid[]) {
                 y += h/2;
                 fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"stroke: black; stroke-width: 1\" />\n", x, y, x);
                 fprintf(svg, "\t<text x=\"%lf\" y=\"0\">CEP: %s</text>\n", x + 3,cepid);
-                removeNode(list[i], node);
+                removeNode(list[i], node, 1);
                 return;
             }
         }
@@ -301,7 +301,7 @@ void del(FILE* svg, FILE* txt, Lista list[10], char cepid[]) {
                 fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"0\" style=\"stroke: black; stroke-width: 1\"/>\n", x, y, x);
                 fprintf(svg, "\t<text x=\"%lf\" y=\"0\">ID: %s</text>\n", x + 3,cepid);
                 fprintf(txt, "ID: %s x: %lf y: %lf espessura: %s corb: %s corp: %s\n", cepid, x, y, espessura, corb, corp);
-                removeNode(list[i], node);
+                removeNode(list[i], node, 1);
                 return;
             }
         }
@@ -309,7 +309,7 @@ void del(FILE* svg, FILE* txt, Lista list[10], char cepid[]) {
     printf("Nao encontrado\n");
 }
 
-void cbq(FILE* txt, Lista list[10], double x, double y, double r, char cstrk[]) {
+void cbq(FILE* txt, Lista list[11], double x, double y, double r, char cstrk[]) {
     No node;
     Info fig;
     for(node = getFirst(list[3]); node != NULL; node = getNext(node)) {
@@ -321,7 +321,7 @@ void cbq(FILE* txt, Lista list[10], double x, double y, double r, char cstrk[]) 
     }
 }
 
-void crd(FILE* txt, Lista list[10], char cepid[]) {
+void crd(FILE* txt, Lista list[11], char cepid[]) {
     No node;
     Info fig;
     int i = 3;
@@ -367,7 +367,7 @@ void crd(FILE* txt, Lista list[10], char cepid[]) {
     }
 }
 
-void car(FILE* svg, FILE* txt, Lista list[10], double px, double py, double pw, double ph) {
+void car(FILE* svg, FILE* txt, Lista list[11], double px, double py, double pw, double ph) {
     Info fig;
     No node;
     char textoArea[30];
@@ -391,7 +391,7 @@ void car(FILE* svg, FILE* txt, Lista list[10], double px, double py, double pw, 
     fprintf(txt, "Area total: %lf\n", area);
 }
 
-void cv(Lista list[10], int n, char cep[], char face, int num){
+void cv(Lista list[11], int n, char cep[], char face, int num){
     No node;
     Info fig;
     double x, y, h, w;
@@ -428,7 +428,7 @@ void cv(Lista list[10], int n, char cep[], char face, int num){
     insert(list[9],createCasos(x,y,cep,face,num,n));
 }
 
-void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int num) {
+void soc(FILE* svg, FILE* txt, Lista list[11], int k, char cep[], char face, int num) {
     No node;
     Info fig;
     double x, y, w, h;
@@ -462,30 +462,23 @@ void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int
         y += num;
         break;
     }
-    for (node = getFirst(list[7]); node != NULL; node = getNext(node)) {
-        fig = getInfo(node);
-        printf("%lf <- ", getPostoDist(fig, x, y));
-    }
-    printf("\n");
     shellSort(list[7], x, y);
-    for (node = getFirst(list[7]); node != NULL; node = getNext(node)) {
-        fig = getInfo(node);
-        printf("%lf <- ", getPostoDist(fig, x, y));
-    }
-    printf("\n");
-    fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"4\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n", x, y);
+    fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"10\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n", x, y);
     int i = 0;
     node = getFirst(list[7]);
     while (i < k) {
         fig = getInfo(node);
-        fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n", getXPosto(fig), getYPosto(fig), x, y);
+        int* tamanho = (int*)malloc(sizeof(int));
+        *tamanho = getTamanho(list[10]);
+        fprintf(svg, "\t<line id=\"%d\" x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n",*tamanho, getXPosto(fig), getYPosto(fig), x, y);
+        insert(list[10],tamanho);
         fprintf(txt, "x: %lf y: %lf\n", getXPosto(fig), getYPosto(fig));
         node = getNext(node);
         i++;
     }
 }
 
-void ci(FILE* svg, FILE* txt, Lista list[10], double x, double y, double r){
+void ci(FILE* svg, FILE* txt, Lista list[11], double x, double y, double r){
     No node;
     Info fig;
     int flag = 1, n = 0;
@@ -522,6 +515,9 @@ void ci(FILE* svg, FILE* txt, Lista list[10], double x, double y, double r){
     Lista casos = convexHull(l);
     if(casos == NULL){
         casos = l;
+    }
+    else{
+        removeList(l,0);
     }
     area = obterArea(casos);
     fprintf(txt,"Numero de casos : %d\nArea : %lf\n",n,area);
@@ -561,10 +557,14 @@ void ci(FILE* svg, FILE* txt, Lista list[10], double x, double y, double r){
     else{
         fprintf(txt,"Não é possivel obter a categoria da região, apenas um caso dentro do circulo\n");
     }
-    fprintf(svg,"\t<polygon fill=\"%s\" fill-opacity=\"0.2\" stroke=\"red\" stroke-width=\"5px\" points=\"",cor);
+    int* tamanho = (int*)malloc(sizeof(int));
+    *tamanho = getTamanho(list[10]);
+    fprintf(svg,"\t<polygon id=\"%d\" fill=\"%s\" fill-opacity=\"0.2\" stroke=\"red\" stroke-width=\"5px\" points=\"",*tamanho, cor);
+    insert(list[10],tamanho);
     for(node = getFirst(casos); node != NULL; node = getNext(node)){
         fig = getInfo(node);
         fprintf(svg," %lf,%lf",getXCaso(fig),getYCaso(fig));
     }
     fprintf(svg," \"/>\n");
+    removeList(casos,0);
 }

@@ -63,7 +63,7 @@ Lista convexHull(Lista list){
         p1 = getInfo(i);
         p2 = getInfo(getPrevious(i));
         if(orientacao(getInfo(primeiro),p1,p2) == 0){
-            removeNode(list, getPrevious(i));
+            removeNode(list, getPrevious(i), 0);
         }
         else{
             j++;
@@ -78,7 +78,7 @@ Lista convexHull(Lista list){
     }
     while(i != NULL){
         while (orientacao(getInfo(getPrevious(getLast(envConv))), getInfo(getLast(envConv)), getInfo(i)) != 1){
-            removeNode(envConv,getLast(envConv));
+            removeNode(envConv,getLast(envConv), 0);
         }
         insert(envConv,getInfo(i));
         i = getNext(i);
@@ -100,7 +100,7 @@ Info getIndexInfo(Lista list, int i) {
 }
 
 void shellSort(Lista list, double x, double y) {
-    Info info1, info2, aux;
+    Info info1, info2;
     int i, j, h, tamanho = getTamanho(list);
 
     for (h = 1; h < tamanho; h = 3 * h + 1);
@@ -109,7 +109,7 @@ void shellSort(Lista list, double x, double y) {
         h = (h - 1)/3;
         for (i = h; i < tamanho; i++) {
             info1 = getIndexInfo(list, i);
-            aux = criarPosto(getXPosto(info1), getYPosto(info1));
+            Info aux = criarPosto(getXPosto(info1), getYPosto(info1));
             j = i;
             while (getPostoDist(getIndexInfo(list, j - h), x, y) > getPostoDist(aux, x, y)) {
                 info1 = getIndexInfo(list, j);
@@ -121,6 +121,7 @@ void shellSort(Lista list, double x, double y) {
                 }
             }
             atribuirPosto(getIndexInfo(list, j), aux);
+            free(aux);
         }
     }
 }

@@ -141,13 +141,16 @@ Posto centroide(Lista l, double area){
     double x = 0, y = 0;
     Info i, j;
     No node;
-    insert(l,getFirst(l));
+
     for(node = getFirst(l); getNext(node) != NULL; node = getNext(node)){
         i = getInfo(node);
         j = getInfo(getNext(node));
         x += (getXCaso(i) + getXCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
         y += (getYCaso(i) + getYCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
     }
-    removeNode(l,getLast(l));
+    i = getInfo(node);
+    j = getInfo(getFirst(l));
+    x += (getXCaso(i) + getXCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
+    y += (getYCaso(i) + getYCaso(j)) * getXCaso(i) * getYCaso(j) - getYCaso(i) * getXCaso(j);
     return criarPosto(x/(6 * area), y/(6 * area));
 }

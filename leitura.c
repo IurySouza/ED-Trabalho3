@@ -20,7 +20,7 @@ char *obterNomeArquivo(char path[]){
 	return strtok(&aux[1],".");
 }
 
-void geo(Lista list[10], char geoArq[], char saida[]){
+void geo(Lista list[11], char geoArq[], char saida[]){
     char tipo[4] ,corb[22] ,corp[22], cepid[20], texto[255];
     int i;
     double x, y, w, h, d;
@@ -109,7 +109,7 @@ void geo(Lista list[10], char geoArq[], char saida[]){
     fclose(geo);
 }
 
-void qry(Lista list[10], char path[], char nomeSaida[]){
+void qry(Lista list[11], char path[], char nomeSaida[]){
     char* pathTxt = malloc((5 + strlen(nomeSaida))*sizeof(char));
     char* pathSvg = malloc((5 + strlen(nomeSaida))*sizeof(char));
     sprintf(pathTxt,"%s.txt",nomeSaida);
@@ -258,7 +258,7 @@ void tratamento(char path[], char outPath[], char paramGeo[], char paramQry[]){
     saidaGeo = (char*)malloc((strlen(saida) + 5)*sizeof(char));
     sprintf(saidaGeo,"%s.svg",saida);
     Lista list[10];
-    for(i = 0; i < 10; i++){
+    for(i = 0; i < 11; i++){
         list[i] = createList();
     }
     geo(list, geoArq,saidaGeo);
@@ -273,7 +273,7 @@ void tratamento(char path[], char outPath[], char paramGeo[], char paramQry[]){
     free(geoArq);
     free(saida);
     free(saidaGeo);
-    for(i = 0; i < 10; i++){
-        removeList(list[i]);
+    for(i = 0; i < 11; i++){
+        removeList(list[i],1);
     }
 }

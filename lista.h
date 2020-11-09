@@ -36,10 +36,10 @@ void insertAfter(Lista l, No elemento, Info info);
 void insertBefore(Lista l, No elemento, Info info);
 //isere um novo no antes do passado no parametro
 
-void removeNode(Lista l, No elemento);
+void removeNode(Lista l, No elemento, int flag);
 //remove o no da lista
 
-void removeList(Lista l);
+void removeList(Lista l, int flag);
 //desaloca todos os no e a lista
 
 #endif

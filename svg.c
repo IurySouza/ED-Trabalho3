@@ -26,7 +26,7 @@ void fecharSvg(FILE* svg){
     fclose(svg);
 }
 
-void desenharSvg(FILE* svg, Lista list[10]){
+void desenharSvg(FILE* svg, Lista list[11]){
     No node;
     for(node = getFirst(list[3]); node != NULL; node = getNext(node)){
         desenharQuadra(svg, getInfo(node));
@@ -50,5 +50,8 @@ void desenharSvg(FILE* svg, Lista list[10]){
     }
     for(node = getFirst(list[9]); node != NULL; node = getNext(node)){
         desenharCasos(svg,getInfo(node));
+    }
+    for(node = getFirst(list[10]); node != NULL; node = getNext(node)){
+        fprintf(svg,"\t<use xlink:href=\"#%d\"/>",*(int*)getInfo(node));
     }
 }
