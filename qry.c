@@ -463,15 +463,18 @@ void soc(FILE* svg, FILE* txt, Lista list[11], int k, char cep[], char face, int
         break;
     }
     shellSort(list[7], x, y);
-    fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"10\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n", x, y);
+    int* tamanho1 = (int*)malloc(sizeof(int));
+    *tamanho1 = getTamanho(list[10]);
+    fprintf(svg, "\t<rect id=\"%d\" x=\"%lf\" y=\"%lf\" width=\"10\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n",*tamanho1, x, y);
+    insert(list[10],tamanho1);
     int i = 0;
     node = getFirst(list[7]);
     while (i < k) {
         fig = getInfo(node);
-        int* tamanho = (int*)malloc(sizeof(int));
-        *tamanho = getTamanho(list[10]);
-        fprintf(svg, "\t<line id=\"%d\" x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n",*tamanho, getXPosto(fig), getYPosto(fig), x, y);
-        insert(list[10],tamanho);
+        int* tamanho2 = (int*)malloc(sizeof(int));
+        *tamanho2 = getTamanho(list[10]);
+        fprintf(svg, "\t<line id=\"%d\" x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n",*tamanho2, getXPosto(fig), getYPosto(fig), x, y);
+        insert(list[10],tamanho2);
         fprintf(txt, "x: %lf y: %lf\n", getXPosto(fig), getYPosto(fig));
         node = getNext(node);
         i++;
@@ -522,7 +525,7 @@ void ci(FILE* svg, FILE* txt, Lista list[11], double x, double y, double r){
     area = obterArea(casos);
     fprintf(txt,"Numero de casos : %d\nArea : %lf\n",n,area);
     if(area != 0){
-        inc = n/(10 * d * area);
+        inc = 10 * n/(d * area);
         if(inc < 0.1){
             strcpy(cor, "00FFFF");
             fprintf(txt,"Categoria : A - Livre de Covid\n");
