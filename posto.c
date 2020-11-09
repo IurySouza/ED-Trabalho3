@@ -41,12 +41,10 @@ void desenharPosto(FILE* svg, Posto post) {
 }
 
 
-void postoSwap(Posto *p1, Posto *p2){  
+void atribuirPosto(Posto *p1, Posto *p2){  
     PostoStruct* a = (PostoStruct*) p1;
     PostoStruct* b = (PostoStruct*) p2;
-    PostoStruct temp = *a;  
     *a = *b;  
-    *b = temp;
 }
 
 double getPostoDist(Posto post, double x, double y) {

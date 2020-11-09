@@ -434,7 +434,7 @@ void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int
     double x, y, w, h;
     for (node = getFirst(list[3]); node != NULL; node = getNext(node)) {
         fig = getInfo(node);
-        if (strcmp(getCEP(node), cep) == 0) {
+        if (strcmp(getCEP(fig), cep) == 0) {
             x = getXQuad(fig);
             y = getYQuad(fig);
             w = getWQuad(fig);
@@ -462,10 +462,20 @@ void soc(FILE* svg, FILE* txt, Lista list[10], int k, char cep[], char face, int
         y += num;
         break;
     }
+    for (node = getFirst(list[7]); node != NULL; node = getNext(node)) {
+        fig = getInfo(node);
+        printf("%lf <- ", getPostoDist(fig, x, y));
+    }
+    printf("\n");
     shellSort(list[7], x, y);
+    for (node = getFirst(list[7]); node != NULL; node = getNext(node)) {
+        fig = getInfo(node);
+        printf("%lf <- ", getPostoDist(fig, x, y));
+    }
+    printf("\n");
     fprintf(svg, "\t<rect x=\"%lf\" y=\"%lf\" width=\"4\" height=\"4\" style=\"fill:blue;stroke-width:2;stroke:white\" />\n", x, y);
     int i = 0;
-    node = getFirst(list[3]);
+    node = getFirst(list[7]);
     while (i < k) {
         fig = getInfo(node);
         fprintf(svg, "\t<line x1=\"%lf\" y1=\"%lf\" x2=\"%lf\" y2=\"%lf\" stroke=\"black\" stroke-width=\"2\" stroke-dasharray=\"5\" />\n", getXPosto(fig), getYPosto(fig), x, y);

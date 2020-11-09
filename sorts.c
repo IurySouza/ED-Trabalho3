@@ -108,18 +108,19 @@ void shellSort(Lista list, double x, double y) {
     while (h > 0) {
         h = (h - 1)/3;
         for (i = h; i < tamanho; i++) {
-            aux = getIndexInfo(list, i);
+            info1 = getIndexInfo(list, i);
+            aux = criarPosto(getXPosto(info1), getYPosto(info1));
             j = i;
             while (getPostoDist(getIndexInfo(list, j - h), x, y) > getPostoDist(aux, x, y)) {
                 info1 = getIndexInfo(list, j);
                 info2 = getIndexInfo(list, j - h);
-                postoSwap(info1, info2);
+                atribuirPosto(info1, info2);
                 j -= h;
                 if (j < h) {
                     break;
                 }
             }
-            postoSwap(getIndexInfo(list, j), aux);
+            atribuirPosto(getIndexInfo(list, j), aux);
         }
     }
 }

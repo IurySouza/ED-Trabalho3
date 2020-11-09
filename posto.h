@@ -21,7 +21,7 @@ void setYPosto(Posto posto, double y);
 void desenharPosto(FILE* svg, Posto posto);
 //desenha o posto no arquivo SVG
 
-void postoSwap(Posto *p1, Posto *p2);
+void atribuirPosto(Posto *p1, Posto *p2);
 //troca o valor de dois ponteiros Posto
 
 double getPostoDist(Posto post, double x, double y);
